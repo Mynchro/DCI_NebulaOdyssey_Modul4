@@ -7,7 +7,9 @@ Wir haben uns in diesem Sinne dafür entschlossen für das zukünftige Browserga
 - Registrierung
 - Login
 - Abfrage von Userdaten per ThunderClient
-- Chatsystem
+- Gebäudebau
+- Ressourcen generieren
+- (Chatsystem)
 
 Diese Funktionen sollen so nahtlos in das Finalprojekt übernommen werden können.
 
@@ -24,7 +26,9 @@ In this context, we decided to integrate the following features into our project
 - Registration
 - Login
 - Fetching user data via ThunderClient
-- Chat system
+- Building-System
+- Ressource-System
+- (Chat system)
 
 These functions are designed to be seamlessly incorporated into the final project.
 
