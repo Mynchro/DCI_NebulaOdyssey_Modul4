@@ -6,6 +6,7 @@ Das vierte Modul behandelte das Erstellen eines Backend-Projekts, bei denen CRUD
 Wir haben uns in diesem Sinne dafür entschlossen für das zukünftige Browsergame "Nebula Odyssey" folgende Funktionen in diesem Projekt einzubauen:
 - Registrierung
 - Login
+- CRUD
 - Abfrage von Userdaten per ThunderClient
 - Gebäudebau
 - Ressourcen generieren
@@ -25,6 +26,7 @@ In this context, we decided to integrate the following features into our project
 
 - Registration
 - Login
+- CRUD
 - Fetching user data via ThunderClient
 - Building-System
 - Ressource-System
