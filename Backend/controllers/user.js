@@ -132,5 +132,3 @@ export const login = async (req, res) => {
     await closeDB();
   }
 };
-
-//
