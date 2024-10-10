@@ -1,8 +1,9 @@
 import bcrypt from "bcrypt";
 import User from "../models/User.js";
 import { connectToDB, closeDB } from "../libs/db.js";
+import { buildingSchema } from "../models/Buildings.js";
 
-//user-registration
+// user-registration
 
 export const register = async (req, res) => {
   const { userName, email, password, confirmPassword } = req.body;
@@ -53,6 +54,31 @@ export const register = async (req, res) => {
       userName,
       email,
       password: hashedPassword,
+      //   homePlanet: {
+      //     ressources: { silicon: 50, ores: 100, energy: 5000 },
+      //     buildings: [
+      //       { buildingType: "Mine", level: 1 },
+      //       { buildingType: "Ammofactory", level: 0 },
+      //       { buildingType: "Fuelfactory", level: 0 },
+      //       { buildingType: "Solarplant", level: 1 },
+      //       { buildingType: "Powerplant", level: 0 },
+      //       { buildingType: "Refinery", level: 0 },
+      //       { buildingType: "Junkyard", level: 0 },
+      //       { buildingType: "Recycler", level: 0 },
+      //       { buildingType: "Spycenter", level: 0 },
+      //       { buildingType: "smallShipyard", level: 0 },
+      //       { buildingType: "mediumShipyard", level: 0 },
+      //       { buildingType: "largeShipyard", level: 0 },
+      //       { buildingType: "Fueldepot", level: 0 },
+      //       { buildingType: "Oredepot", level: 0 },
+      //       { buildingType: "Chemicaldepot", level: 0 },
+      //       { buildingType: "Ammodepot", level: 0 },
+      //       { buildingType: "Steeldepot", level: 0 },
+      //       { buildingType: "Energystorage", level: 0 },
+      //       { buildingType: "Silicondepot", level: 0 },
+      //       { buildingType: "Mikrochipdepot", level: 0 },
+      //     ],
+      //   },
     });
 
     await newUser.save();
@@ -106,3 +132,5 @@ export const login = async (req, res) => {
     await closeDB();
   }
 };
+
+//
