@@ -1,7 +1,7 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
 import dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config({ path: "../.env" });
 
 const adminKey = encodeURIComponent(process.env.ADMIN);
 const uri = `mongodb+srv://Admin:${adminKey}@nebulaodysseycluster.4gaxp.mongodb.net/?retryWrites=true&w=majority&appName=NebulaOdysseyCluster`;
