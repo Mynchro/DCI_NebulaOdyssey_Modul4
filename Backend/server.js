@@ -3,6 +3,7 @@ import { connectToDB } from "./libs/db.js";
 import userRoute from "./routes/userRoute.js";
 import User from "./models/User.js";
 import buildingRoute from "./routes/buildingRoute.js";
+import resourceRouter from "./routes/resourceRoute.js";
 
 const port = 3000;
 const app = express();
@@ -15,6 +16,7 @@ const startServer = async () => {
         await connectToDB();
         app.use("/user", userRoute);
         app.use("/api", buildingRoute);
+        app.use("/api", resourceRouter);
 
         app.listen(port, () => {
             console.log(`Server is running on port ${port}`);
@@ -28,7 +30,7 @@ const startServer = async () => {
 async function calculateResources() {
     setInterval(async () => {
         try {
-            const users = await User.find().populate("homePlanet.buildings"); // einkommentieren wenn Dummy weg fällt
+            const users = await User.find().populate("homePlanet.buildings");
 
             for (const user of users) {
                 let totalProduction = {
