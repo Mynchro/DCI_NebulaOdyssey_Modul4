@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
-import { ressourceSchema } from "./Planet.js";
+import ressourceSchema from "./Ressources.js";
 const { Schema } = mongoose;
 
-const buildingSchema = new Schema({
+export const buildingSchema = new Schema({
     buildingType: {
         type: String,
         enum: [
@@ -27,13 +27,14 @@ const buildingSchema = new Schema({
             "Silicondepot",
             "Mikrochipdepot",
         ],
-        required: true,
+        // required: true,
     },
     level: {
         type: Number,
         default: 0,
     },
-    productionRate: ressourceSchema,
+    productionRate: { type: ressourceSchema, default: {} },
+    _id: false,
 });
 
 const Building = mongoose.model("Building", buildingSchema);

@@ -18,7 +18,9 @@ export const connectToDB = async () => {
         });
 
         // Verbindung zur Datenbank herstellen
-        await mongoose.connect(uri);
+        await mongoose.connect(uri, {
+            serverSelectionTimeoutMS: 30000, // Timeout auf 30 Sekunden erhöht
+        });
     } catch (error) {
         console.error("Failed to connect to MongoDB:", error);
         process.exit(1);

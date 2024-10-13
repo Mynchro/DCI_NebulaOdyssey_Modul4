@@ -1,120 +1,105 @@
 import express from "express";
 import { connectToDB } from "./libs/db.js";
-import { Planet } from "./models/Planet.js";
-import Building from "./models/Buildings.js";
-
-const app = express();
-app.use(express.json());
+import userRoute from "./routes/userRoute.js";
+import User from "./models/User.js";
+import buildingRoute from "./routes/buildingRoute.js";
 
 const port = 3000;
+const app = express();
 
-await connectToDB();
+//Middleware
+app.use(express.json());
 
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+const startServer = async () => {
+    try {
+        await connectToDB();
+        app.use("/user", userRoute);
+        app.use("/api", buildingRoute);
 
-    calculateResources();
-});
+        app.listen(port, () => {
+            console.log(`Server is running on port ${port}`);
+            calculateResources();
+        });
+    } catch (error) {
+        console.error("Fehler beim Starten des Servers:", error);
+    }
+};
 
 async function calculateResources() {
-    /// Dummy ---------------------------------------------------------------------------------------------
-    const dummyPlanet = {
-        name: "TestPlanet",
-        ressources: {
-            silicon: 100,
-            ores: 200,
-            chemicals: 300,
-            fuel: 400,
-            energy: 500,
-            steel: 600,
-            electronics: 700,
-            ammo: 800,
-        },
-        buildings: [
-            {
-                productionRate: {
-                    silicon: 10,
-                    ores: 20,
-                    chemicals: 30,
-                    fuel: 40,
-                    energy: 50,
-                    steel: 60,
-                    electronics: 70,
-                    ammo: 80,
-                },
-            },
-            {
-                productionRate: {
-                    silicon: 5,
-                    ores: 10,
-                    chemicals: 15,
-                    fuel: 20,
-                    energy: 25,
-                    steel: 30,
-                    electronics: 35,
-                    ammo: 40,
-                },
-            },
-        ],
-    };
-    /// Dummy ---------------------------------------------------------------------------------------------
-
     setInterval(async () => {
         try {
-            //const planets = await Planet.find().populate("buildings"); // einkommentieren wenn Dummy weg fällt
+            const users = await User.find().populate("homePlanet.buildings"); // einkommentieren wenn Dummy weg fällt
 
-            //for (const planet of planets) { // einkommentieren wenn Dummy weg fällt
-            let totalProduction = {
-                silicon: 0,
-                ores: 0,
-                chemicals: 0,
-                fuel: 0,
-                energy: 0,
-                steel: 0,
-                electronics: 0,
-                ammo: 0,
-            };
+            for (const user of users) {
+                let totalProduction = {
+                    silicon: 0,
+                    ores: 0,
+                    chemicals: 0,
+                    fuel: 0,
+                    energy: 0,
+                    steel: 0,
+                    electronics: 0,
+                    ammo: 0,
+                };
 
-            for (const building of dummyPlanet.buildings) {
-                // dummy durch Planet ersetzen wenn dummyPlanet weg fällt
-                const {
-                    silicon,
-                    ores,
-                    chemicals,
-                    fuel,
-                    energy,
-                    steel,
-                    electronics,
-                    ammo,
-                } = building.productionRate;
-                totalProduction.silicon += silicon;
-                totalProduction.ores += ores;
-                totalProduction.chemicals += chemicals;
-                totalProduction.fuel += fuel;
-                totalProduction.energy += energy;
-                totalProduction.steel += steel;
-                totalProduction.electronics += electronics;
-                totalProduction.ammo += ammo;
+                for (const building of user.homePlanet.buildings) {
+                    const productionMultiplier = 1 + building.level * 0.1;
+
+                    totalProduction.silicon +=
+                        building.productionRate.silicon * productionMultiplier;
+
+                    totalProduction.ores +=
+                        building.productionRate.ores * productionMultiplier;
+
+                    totalProduction.chemicals +=
+                        building.productionRate.chemicals *
+                        productionMultiplier;
+
+                    totalProduction.fuel +=
+                        building.productionRate.fuel * productionMultiplier;
+
+                    totalProduction.energy +=
+                        building.productionRate.energy * productionMultiplier;
+
+                    totalProduction.steel +=
+                        building.productionRate.steel * productionMultiplier;
+
+                    totalProduction.electronics +=
+                        building.productionRate.electronics *
+                        productionMultiplier;
+
+                    totalProduction.ammo +=
+                        building.productionRate.ammo * productionMultiplier;
+                }
+
+                // Füge die Gesamtproduktion zu den Ressourcen des Home-Planeten hinzu
+                user.homePlanet.ressources.silicon += totalProduction.silicon;
+
+                user.homePlanet.ressources.ores += totalProduction.ores;
+
+                user.homePlanet.ressources.chemicals +=
+                    totalProduction.chemicals;
+
+                user.homePlanet.ressources.fuel += totalProduction.fuel;
+
+                user.homePlanet.ressources.energy += totalProduction.energy;
+
+                user.homePlanet.ressources.steel += totalProduction.steel;
+
+                user.homePlanet.ressources.electronics +=
+                    totalProduction.electronics;
+
+                user.homePlanet.ressources.ammo += totalProduction.ammo;
+
+                // Speichere die aktualisierten Ressourcen
+                await user.save();
             }
 
-            dummyPlanet.ressources.silicon += totalProduction.silicon; // dummy durch Planet ersetzen wenn dummyPlanet weg fällt
-            dummyPlanet.ressources.ores += totalProduction.ores; // dummy durch Planet ersetzen wenn dummyPlanet weg fällt
-            dummyPlanet.ressources.chemicals += totalProduction.chemicals; // dummy durch Planet ersetzen wenn dummyPlanet weg fällt
-            dummyPlanet.ressources.fuel += totalProduction.fuel; // dummy durch Planet ersetzen wenn dummyPlanet weg fällt
-            dummyPlanet.ressources.energy += totalProduction.energy; // dummy durch Planet ersetzen wenn dummyPlanet weg fällt
-            dummyPlanet.ressources.steel += totalProduction.steel; // dummy durch Planet ersetzen wenn dummyPlanet weg fällt
-            dummyPlanet.ressources.electronics += totalProduction.electronics; // dummy durch Planet ersetzen wenn dummyPlanet weg fällt
-            dummyPlanet.ressources.ammo += totalProduction.ammo; // dummy durch Planet ersetzen wenn dummyPlanet weg fällt
-
-            //await planet.save(); // einkommentieren wenn Dummy weg fällt
-            //} // einkommentieren wenn Dummy weg fällt
-            console.log(
-                "Aktualisierte Ressourcen des Planeten:",
-                dummyPlanet.ressources
-            );
             console.log("Ressourcen wurden erfolgreich aktualisiert.");
         } catch (error) {
             console.error("Fehler bei der Ressourcenberechnung:", error);
         }
-    }, 5000); // alle 5 Sekunden ausführen
+    }, 30000); // alle 30 Sekunden ausführen
 }
+
+startServer();
