@@ -1,4 +1,3 @@
-import { connectToDB, closeDB } from "../libs/db.js";
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
 
@@ -6,8 +5,6 @@ export const updateUser = async (req, res) => {
   const { userName, newUserName, newEmail, newPassword } = req.body;
 
   try {
-    await connectToDB();
-
     const updateData = {};
 
     // validate new userName
@@ -55,7 +52,5 @@ export const updateUser = async (req, res) => {
     return res
       .status(500)
       .json({ message: "Etwas ist schiefgelaufen, probier es nochmal." });
-  } finally {
-    await closeDB();
   }
 };

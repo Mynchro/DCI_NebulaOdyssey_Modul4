@@ -1,6 +1,5 @@
 import bcrypt from "bcrypt";
 import User from "../models/User.js";
-import { connectToDB, closeDB } from "../libs/db.js";
 
 // user-registration
 
@@ -31,10 +30,6 @@ export const register = async (req, res) => {
   }
 
   try {
-    // connect to db
-
-    await connectToDB();
-
     // check existing User
 
     const existingUser = await User.findOne({ userName });
@@ -65,8 +60,6 @@ export const register = async (req, res) => {
     return res
       .status(500)
       .json({ message: "Serverfehler, versuche es erneut" });
-  } finally {
-    await closeDB();
   }
 };
 
@@ -76,8 +69,6 @@ export const login = async (req, res) => {
   const { userName, password } = req.body;
 
   try {
-    await connectToDB();
-
     // check if user exists in the db
     const existingUser = await User.findOne({ userName });
     if (!existingUser) {
@@ -102,7 +93,5 @@ export const login = async (req, res) => {
     return res
       .status(500)
       .json({ message: "Etwas ist schiefgelaufen, probier es nochmal." });
-  } finally {
-    await closeDB();
   }
 };

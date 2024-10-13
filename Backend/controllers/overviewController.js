@@ -1,13 +1,7 @@
-// Show a list of all registered Users
-
 import User from "../models/User.js";
-
-import { connectToDB, closeDB } from "../libs/db.js";
 
 export const showUserList = async (req, res) => {
   try {
-    await connectToDB();
-
     const users = await User.find();
 
     if (users.length === 0) {
@@ -33,7 +27,5 @@ export const showUserList = async (req, res) => {
   } catch (error) {
     console.error("Fehler beim Abrufen der Daten.", error);
     res.status(400).json({ message: "Fehler beim Abrufen der Daten." });
-  } finally {
-    await closeDB();
   }
 };
