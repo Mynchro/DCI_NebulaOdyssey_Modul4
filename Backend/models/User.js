@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
-import ressourceSchema from "./Ressources.js";
+import resourceSchema from "./Resources.js";
 import { buildingSchema } from "./Buildings.js";
 const { Schema } = mongoose;
 
 // Define the homePlanet schema with default resources and buildings
 const homePlanetSchema = new Schema({
   planetName: { type: String, default: "Nebula Zero" },
-  ressources: {
-    type: ressourceSchema,
+  resources: {
+    type: resourceSchema,
     default: {
       silicon: 50,
       ores: 100,
@@ -40,7 +40,7 @@ const userSchema = new Schema({
     type: homePlanetSchema, // Verknüpfe das homePlanetSchema hier
     default: () => ({
       planetName: "Nebula Zero",
-      ressources: {
+      resources: {
         silicon: 50,
         ores: 100,
         energy: 5000,

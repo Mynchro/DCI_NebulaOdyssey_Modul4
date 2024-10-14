@@ -1,8 +1,8 @@
-// models/Ressource.js
+// models/resource.js
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-export const ressourceSchema = new Schema({
+export const resourceSchema = new Schema({
   silicon: {
     type: Number,
     default: 0,
@@ -38,4 +38,4 @@ export const ressourceSchema = new Schema({
   _id: false,
 });
 
-export default ressourceSchema;
+export default resourceSchema;
