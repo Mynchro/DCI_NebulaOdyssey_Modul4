@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
-dotenv.config({ path: "../.env" });
+dotenv.config();
 
 const { ADMIN } = process.env;
 const uri = `mongodb+srv://Admin:${ADMIN}@nebulaodysseycluster.4gaxp.mongodb.net/NebulaOdyssey?retryWrites=true&w=majority&appName=NebulaOdysseyCluster`;
