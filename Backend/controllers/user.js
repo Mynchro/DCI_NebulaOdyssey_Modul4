@@ -1,1 +1,0 @@
-// Funktionen: Registrierung, Login, Logout

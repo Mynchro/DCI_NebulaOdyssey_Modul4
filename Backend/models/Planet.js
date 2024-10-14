@@ -1,45 +1,13 @@
 import mongoose from "mongoose";
+import { buildingSchema } from "./Buildings.js";
+import resourceSchema from "./resources.js";
 const { Schema } = mongoose;
 
-const ressourceSchema = new Schema({
-  silicon: {
-    type: Number,
-    default: 0,
-  },
-  ores: {
-    type: Number,
-    default: 0,
-  },
-  chemicals: {
-    type: Number,
-    default: 0,
-  },
-  fuel: {
-    type: Number,
-    default: 0,
-  },
-  energy: {
-    type: Number,
-    default: 0,
-  },
-  steel: {
-    type: Number,
-    default: 0,
-  },
-  electronics: {
-    type: Number,
-    default: 0,
-  },
-  ammo: {
-    type: Number,
-    default: 0,
-  },
-});
-
 const planetSchema = new Schema({
-  system: {
-    type: Schema.Types.ObjectId,
-    ref: "Galaxy",
+  starSystem: {
+    // type: Schema.Types.ObjectId,
+    // ref: 'Galaxy',
+    type: String,
     required: true,
   },
   position: {
@@ -49,35 +17,32 @@ const planetSchema = new Schema({
     max: 16,
   },
   owner: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-    default: null,
+    type: String,
+    // ref: 'User',
+    // default: null,
   },
   name: {
     type: String,
     required: true,
   },
-  ressources: ressourceSchema,
-  buildings: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Building",
-    },
-  ],
+  resources: resourceSchema,
+  buildings: { type: [buildingSchema], default: [] },
   research: [
     {
-      type: Schema.Types.ObjectId,
-      ref: "Research",
+      // type: Schema.Types.ObjectId,
+      type: String,
+      // ref: 'Research',
     },
   ],
   shipyard: [
     {
-      type: Schema.Types.ObjectId,
-      ref: "Shipyard",
+      // type: Schema.Types.ObjectId,
+      type: String,
+      // ref: 'Shipyard',
     },
   ],
 });
 
 const Planet = mongoose.model("Planet", planetSchema);
 
-export default { Planet, ressourceSchema };
+export default Planet;

@@ -1,32 +1,37 @@
-import { MongoClient, ServerApiVersion } from "mongodb";
+import mongoose from "mongoose";
 import dotenv from "dotenv";
 
 dotenv.config({ path: "../.env" });
 
-const adminKey = encodeURIComponent(process.env.ADMIN);
-const uri = `mongodb+srv://Admin:${adminKey}@nebulaodysseycluster.4gaxp.mongodb.net/?retryWrites=true&w=majority&appName=NebulaOdysseyCluster`;
+const { ADMIN } = process.env;
+const uri = `mongodb+srv://Admin:${ADMIN}@nebulaodysseycluster.4gaxp.mongodb.net/NebulaOdyssey?retryWrites=true&w=majority&appName=NebulaOdysseyCluster`;
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-});
+export const connectToDB = async () => {
+    try {
+        // Setze Event-Listener für die Verbindung
+        mongoose.connection.on("error", (error) => {
+            console.error("Failed to connect to MongoDB:", error);
+        });
 
-async function run() {
-  try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-}
-run().catch(console.dir);
+        mongoose.connection.on("connected", () => {
+            console.log("Connected to MongoDB");
+        });
+
+        // Verbindung zur Datenbank herstellen
+        await mongoose.connect(uri, {
+            serverSelectionTimeoutMS: 30000, // Timeout auf 30 Sekunden erhöht
+        });
+    } catch (error) {
+        console.error("Failed to connect to MongoDB:", error);
+        process.exit(1);
+    }
+};
+
+export const closeDB = async () => {
+    try {
+        await mongoose.connection.close();
+        console.log("Database connection closed.");
+    } catch (error) {
+        console.error("Error closing the database connection:", error);
+    }
+};
