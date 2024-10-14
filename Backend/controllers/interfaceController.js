@@ -44,20 +44,40 @@ export const upgradeBuilding = async (req, res) => {
       return res.status(400).send("Maximales Level erreicht");
     }
 
+    // Erhöhe die Produktionsrate um 10% pro Level
+    //Math.floor(1 + building.level * 0.1).toFixed(2)
+    const productionIncreaseFactor = parseFloat(
+      (building.level * 1.1).toFixed(2)
+    );
+    building.productionRate.silicon = parseFloat(
+      (building.productionRate.silicon * productionIncreaseFactor).toFixed(2)
+    );
+    building.productionRate.ores = parseFloat(
+      (building.productionRate.ores * productionIncreaseFactor).toFixed(2)
+    );
+    building.productionRate.chemicals = parseFloat(
+      (building.productionRate.chemicals * productionIncreaseFactor).toFixed(2)
+    );
+    building.productionRate.fuel = parseFloat(
+      (building.productionRate.fuel * productionIncreaseFactor).toFixed(2)
+    );
+    building.productionRate.energy = parseFloat(
+      (building.productionRate.energy * productionIncreaseFactor).toFixed(2)
+    );
+    building.productionRate.steel = parseFloat(
+      (building.productionRate.steel * productionIncreaseFactor).toFixed(2)
+    );
+    building.productionRate.electronics = parseFloat(
+      (building.productionRate.electronics * productionIncreaseFactor).toFixed(
+        2
+      )
+    );
+    building.productionRate.ammo = parseFloat(
+      (building.productionRate.ammo * productionIncreaseFactor).toFixed(2)
+    );
+
     // Erhöhe das Level um 1
     building.level += 1;
-
-    // Erhöhe die Produktionsrate um 10% pro Level
-    const productionIncreaseFactor = 1.1;
-    building.productionRate.silicon *= productionIncreaseFactor;
-    building.productionRate.ores *= productionIncreaseFactor;
-    building.productionRate.chemicals *= productionIncreaseFactor;
-    building.productionRate.fuel *= productionIncreaseFactor;
-    building.productionRate.energy *= productionIncreaseFactor;
-    building.productionRate.steel *= productionIncreaseFactor;
-    building.productionRate.electronics *= productionIncreaseFactor;
-    building.productionRate.ammo *= productionIncreaseFactor;
-
     // Speichere den Benutzer mit dem aktualisierten Gebäude
     await user.save();
 
@@ -98,19 +118,37 @@ export const downgradeBuilding = async (req, res) => {
         .send("Das Level des Gebäudes kann nicht weiter gesenkt werden");
     }
 
-    // Erhöhe das Level um 1
-    building.level -= 1;
-
     // Verringere die Produktionsrate um 10% pro Level
-    const productionIncreaseFactor = 0.9;
-    building.productionRate.silicon *= productionIncreaseFactor;
-    building.productionRate.ores *= productionIncreaseFactor;
-    building.productionRate.chemicals *= productionIncreaseFactor;
-    building.productionRate.fuel *= productionIncreaseFactor;
-    building.productionRate.energy *= productionIncreaseFactor;
-    building.productionRate.steel *= productionIncreaseFactor;
-    building.productionRate.electronics *= productionIncreaseFactor;
-    building.productionRate.ammo *= productionIncreaseFactor;
+    const productionDecreaseFactor = 1 / 1.1;
+    building.productionRate.silicon = parseFloat(
+      (building.productionRate.silicon * productionDecreaseFactor).toFixed(2)
+    );
+    building.productionRate.ores = parseFloat(
+      (building.productionRate.ores * productionDecreaseFactor).toFixed(2)
+    );
+    building.productionRate.chemicals = parseFloat(
+      (building.productionRate.chemicals * productionDecreaseFactor).toFixed(2)
+    );
+    building.productionRate.fuel = parseFloat(
+      (building.productionRate.fuel * productionDecreaseFactor).toFixed(2)
+    );
+    building.productionRate.energy = parseFloat(
+      (building.productionRate.energy * productionDecreaseFactor).toFixed(2)
+    );
+    building.productionRate.steel = parseFloat(
+      (building.productionRate.steel * productionDecreaseFactor).toFixed(2)
+    );
+    building.productionRate.electronics = parseFloat(
+      (building.productionRate.electronics * productionDecreaseFactor).toFixed(
+        2
+      )
+    );
+    building.productionRate.ammo = parseFloat(
+      (building.productionRate.ammo * productionDecreaseFactor).toFixed(2)
+    );
+
+    // verringere das Level um 1
+    building.level -= 1;
 
     // Speichere den Benutzer mit dem aktualisierten Gebäude
     await user.save();

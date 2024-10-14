@@ -45,31 +45,21 @@ async function calculateResources() {
         };
 
         for (const building of user.homePlanet.buildings) {
-          const productionMultiplier = 1 + building.level * 0.1;
+          totalProduction.silicon += building.productionRate.silicon;
 
-          totalProduction.silicon +=
-            building.productionRate.silicon * productionMultiplier;
+          totalProduction.ores += building.productionRate.ores;
 
-          totalProduction.ores +=
-            building.productionRate.ores * productionMultiplier;
+          totalProduction.chemicals += building.productionRate.chemicals;
 
-          totalProduction.chemicals +=
-            building.productionRate.chemicals * productionMultiplier;
+          totalProduction.fuel += building.productionRate.fuel;
 
-          totalProduction.fuel +=
-            building.productionRate.fuel * productionMultiplier;
+          totalProduction.energy += building.productionRate.energy;
 
-          totalProduction.energy +=
-            building.productionRate.energy * productionMultiplier;
+          totalProduction.steel += building.productionRate.steel;
 
-          totalProduction.steel +=
-            building.productionRate.steel * productionMultiplier;
+          totalProduction.electronics += building.productionRate.electronics;
 
-          totalProduction.electronics +=
-            building.productionRate.electronics * productionMultiplier;
-
-          totalProduction.ammo +=
-            building.productionRate.ammo * productionMultiplier;
+          totalProduction.ammo += building.productionRate.ammo;
         }
 
         // Füge die Gesamtproduktion zu den resourcen des Home-Planeten hinzu
