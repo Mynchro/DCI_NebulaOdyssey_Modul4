@@ -2,8 +2,8 @@ import express from "express";
 import { connectToDB } from "./libs/db.js";
 import userRoute from "./routes/userRoute.js";
 import User from "./models/User.js";
-import buildingRoute from "./routes/buildingRoute.js";
-import resourceRouter from "./routes/resourceRoute.js";
+import interfaceRoute from "./routes/interfaceRoute.js";
+import adminRoute from "./routes/adminRoute.js";
 
 const port = 3000;
 const app = express();
@@ -14,10 +14,9 @@ app.use(express.json());
 const startServer = async () => {
   try {
     await connectToDB();
-    app.use("/", userRoute);
+    app.use("/admin", adminRoute);
     app.use("/user", userRoute);
-    app.use("/api", buildingRoute);
-    app.use("/api", resourceRouter);
+    app.use("/api", interfaceRoute);
 
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
@@ -73,24 +72,24 @@ async function calculateResources() {
             building.productionRate.ammo * productionMultiplier;
         }
 
-        // Füge die Gesamtproduktion zu den Ressourcen des Home-Planeten hinzu
-        user.homePlanet.ressources.silicon += totalProduction.silicon;
+        // Füge die Gesamtproduktion zu den resourcen des Home-Planeten hinzu
+        user.homePlanet.resources.silicon += totalProduction.silicon;
 
-        user.homePlanet.ressources.ores += totalProduction.ores;
+        user.homePlanet.resources.ores += totalProduction.ores;
 
-        user.homePlanet.ressources.chemicals += totalProduction.chemicals;
+        user.homePlanet.resources.chemicals += totalProduction.chemicals;
 
-        user.homePlanet.ressources.fuel += totalProduction.fuel;
+        user.homePlanet.resources.fuel += totalProduction.fuel;
 
-        user.homePlanet.ressources.energy += totalProduction.energy;
+        user.homePlanet.resources.energy += totalProduction.energy;
 
-        user.homePlanet.ressources.steel += totalProduction.steel;
+        user.homePlanet.resources.steel += totalProduction.steel;
 
-        user.homePlanet.ressources.electronics += totalProduction.electronics;
+        user.homePlanet.resources.electronics += totalProduction.electronics;
 
-        user.homePlanet.ressources.ammo += totalProduction.ammo;
+        user.homePlanet.resources.ammo += totalProduction.ammo;
 
-        // Speichere die aktualisierten Ressourcen
+        // Speichere die aktualisierten resourcen
         await user.save();
       }
 
