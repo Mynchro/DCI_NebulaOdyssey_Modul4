@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import resourceSchema from "./Resources.js";
+import { resourceSchema } from "./Resources.js";
 const { Schema } = mongoose;
 
 export const buildingSchema = new Schema({
@@ -34,9 +34,9 @@ export const buildingSchema = new Schema({
     default: 0,
   },
   productionRate: { type: resourceSchema, default: {} },
-  _id: false,
+  // _id: false,
 });
 
 const Building = mongoose.model("Building", buildingSchema);
 
-export default { Building };
+export default Building;
