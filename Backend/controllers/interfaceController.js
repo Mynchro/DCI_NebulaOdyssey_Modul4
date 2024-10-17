@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import Planet from "../models/Planet.js";
 
 export const getUserResources = async (req, res) => {
   try {
@@ -23,15 +24,26 @@ export const upgradeBuilding = async (req, res) => {
   try {
     const { userId, buildingType } = req.params;
 
-    // Finde den Benutzer anhand der ID
-    const user = await User.findById(userId);
+    // Finde den Benutzer anhand der ID und lade seine Planeten
+    const user = await User.findById(userId).populate({
+      path: "planets",
+      populate: { path: "buildings" }, // Populiere die Gebäude des Planeten
+    });
     if (!user) {
       return res.status(404).send("Benutzer nicht gefunden");
     }
 
-    // Suche das Gebäude anhand des buildingType im Home-Planeten des Benutzers
-    const building = user.homePlanet.buildings.find(
-      (b) => b.buildingType === buildingType
+    // Angenommen, du möchtest das Gebäude auf dem Heimatplaneten upgraden
+    const homePlanet = user.planets[0]; // Gehe davon aus, dass der Heimatplanet der erste Planet ist
+    if (!homePlanet) {
+      return res.status(404).send("Heimatplanet nicht gefunden");
+    }
+
+    // console.log("Verfügbare Gebäude:", homePlanet.buildings); // Debugging
+
+    // Suche das Gebäude anhand des buildingType im Heimatplaneten
+    const building = homePlanet.buildings.find(
+      (b) => b.buildingType.toLowerCase() === buildingType.toLowerCase()
     );
 
     if (!building) {
@@ -40,6 +52,7 @@ export const upgradeBuilding = async (req, res) => {
         .send(`Gebäude mit dem Typ ${buildingType} nicht gefunden`);
     }
 
+    // Überprüfe, ob das maximale Level erreicht wurde
     if (building.level >= 15) {
       return res.status(400).send("Maximales Level erreicht");
     }
@@ -75,8 +88,9 @@ export const upgradeBuilding = async (req, res) => {
 
     // Erhöhe das Level um 1
     building.level += 1;
-    // Speichere den Benutzer mit dem aktualisierten Gebäude
-    await user.save();
+
+    // Speichere den Planeten mit dem aktualisierten Gebäude
+    await homePlanet.save();
 
     return res.status(200).send({
       message: "Gebäude wurde erfolgreich aufgewertet",

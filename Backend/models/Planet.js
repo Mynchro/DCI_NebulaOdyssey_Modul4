@@ -17,10 +17,14 @@ const planetSchema = new Schema({
   },
   buildings: [
     {
-      type: Schema.Types.ObjectId,
-      ref: "Building", // Verweis auf die Building-Kollektion
+      original_Building_id: {
+        type: Schema.Types.ObjectId,
+        ref: "Building",
+      },
+      buildingSchema,
     },
   ],
+
   resources: {
     type: Schema.Types.ObjectId,
     ref: "Resource",
