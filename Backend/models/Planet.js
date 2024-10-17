@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { buildingSchema } from "./Buildings.js";
 // import { buildingSchema } from "./Buildings.js";
-// import resourceSchema from "./resources.js";
+import { resourceSchema } from "./Resources.js";
 const { Schema } = mongoose;
 
 const planetSchema = new Schema({
@@ -15,19 +15,10 @@ const planetSchema = new Schema({
     required: true,
     default: "",
   },
-  buildings: [
-    {
-      original_Building_id: {
-        type: Schema.Types.ObjectId,
-        ref: "Building",
-      },
-      buildingSchema,
-    },
-  ],
-
+  buildings: [buildingSchema], // Gebäude als Unterdokumente
   resources: {
-    type: Schema.Types.ObjectId,
-    ref: "Resource",
+    type: resourceSchema, // Ressourcen bleiben gleich
+    default: {},
   },
 });
 

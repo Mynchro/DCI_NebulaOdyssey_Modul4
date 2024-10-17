@@ -17,7 +17,7 @@ export const createHomeplanet = async (userId) => {
       owner: userId,
       name: "Nebula",
       buildings: defaultBuildings.map((building) => ({
-        original_Building_id: building._id,
+        originalBuildingId: building._id,
         buildingType: building.buildingType,
         level: building.level,
         productionRate: building.productionRate,
