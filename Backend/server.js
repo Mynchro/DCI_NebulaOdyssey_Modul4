@@ -20,7 +20,7 @@ const startServer = async () => {
     app.use("/user", userRoute);
     app.use("/api", interfaceRoute);
     // seedResources();
-    // createGameworld();
+    createGameworld();
 
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);

@@ -4,6 +4,12 @@ import Building from "../models/Buildings.js";
 
 export const createGameworld = async () => {
   try {
+    const isPlanetCollection = await Planet.find();
+
+    if (isPlanetCollection.length !== 0) {
+      return;
+    }
+
     const defaultBuildings = await Building.find();
     const defaultResources = await Resource.findOne();
 
@@ -13,7 +19,7 @@ export const createGameworld = async () => {
       );
     }
 
-    const buildingId = defaultBuildings.map((building) => building._id);
+    // const buildingId = defaultBuildings.map((building) => building._id);
     const resourceId = defaultResources._id;
 
     const planets = [];
@@ -21,7 +27,12 @@ export const createGameworld = async () => {
       const newPlanet = new Planet({
         owner: null,
         name: `Planet ${i}`,
-        buildings: buildingId,
+        buildings: defaultBuildings.map((building) => ({
+          originalBuildingId: building._id,
+          buildingType: building.buildingType,
+          level: building.level,
+          productionRate: building.productionRate,
+        })),
         resources: resourceId,
       });
 
