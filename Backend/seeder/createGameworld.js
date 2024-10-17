@@ -19,7 +19,6 @@ export const createGameworld = async () => {
       );
     }
 
-    // const buildingId = defaultBuildings.map((building) => building._id);
     const resourceId = defaultResources._id;
 
     const planets = [];

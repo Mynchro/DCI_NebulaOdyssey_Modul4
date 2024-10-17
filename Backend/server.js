@@ -13,22 +13,35 @@ const app = express();
 //Middleware
 app.use(express.json());
 
-const startServer = async () => {
-  try {
-    await connectToDB();
-    app.use("/admin", adminRoute);
-    app.use("/user", userRoute);
-    app.use("/api", interfaceRoute);
-    // seedResources();
-    createGameworld();
+await connectToDB();
+app.use("/admin", adminRoute);
+app.use("/user", userRoute);
+app.use("/api", interfaceRoute);
 
-    app.listen(port, () => {
-      console.log(`Server is running on port ${port}`);
-      // calculateResources();
-    });
-  } catch (error) {
-    console.error("Fehler beim Starten des Servers:", error);
-  }
-};
+// seedResources();
+createGameworld();
+// calculateResources();
 
-startServer();
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
+// const startServer = async () => {
+//   try {
+//     await connectToDB();
+//     app.use("/admin", adminRoute);
+//     app.use("/user", userRoute);
+//     app.use("/api", interfaceRoute);
+//     // seedResources();
+//     createGameworld();
+
+//     app.listen(port, () => {
+//       console.log(`Server is running on port ${port}`);
+//       // calculateResources();
+//     });
+//   } catch (error) {
+//     console.error("Fehler beim Starten des Servers:", error);
+//   }
+// };
+
+// startServer();
